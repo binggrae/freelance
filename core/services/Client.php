@@ -4,9 +4,8 @@
 namespace core\services;
 
 
-use core\exceptions\RequestException;
 use core\pages\HomePage;
-use \yii\httpclient\Client as BaseClient;
+use yii\httpclient\Client as BaseClient;
 use yii\httpclient\Request;
 
 class Client
@@ -20,7 +19,6 @@ class Client
     {
         $this->client = $client;
     }
-
 
 
     public function get($url, $data = [])
@@ -59,16 +57,18 @@ class Client
             CURLOPT_TIMEOUT => 100,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36',
-            CURLOPT_PROXY => $this->getProxy(),
 //            CURLOPT_VERBOSE => true,
         ];
 
+        if (isset($data['proxy'])) {
+            $proxy = $data['proxy'];
+            $opt[CURLOPT_PROXY] = $proxy;
+            $opt[CURLOPT_COOKIEJAR] = \Yii::getAlias('@common/data/cookie.'.md5($proxy).'.txt');
+            $opt[CURLOPT_COOKIEFILE] = \Yii::getAlias('@common/data/cookie.'.md5($proxy).'.txt');
+            unset($data['proxy']);
+        }
 
-//        if($method == 'post') {
-//            $opt[CURLOPT_VERBOSE] = true;
-//        }
 
-//        $this->client->batchSend()
         $response = $this->client->createRequest()
             ->setMethod($method)
             ->setUrl($url)
@@ -79,7 +79,7 @@ class Client
     }
 
 
-    private function getProxy()
+    public static function getProxy()
     {
         $proxies = [
             [701, '5.8.37.225', '8085'],
@@ -435,7 +435,7 @@ class Client
         ];
 
         $proxy = $proxies[array_rand($proxies)];
-        
-        return $proxy[1]. ':'.$proxy[2];
+
+        return $proxy[1] . ':' . $proxy[2];
     }
 }

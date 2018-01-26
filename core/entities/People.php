@@ -22,6 +22,8 @@ use yii\web\Request;
 class People extends \yii\db\ActiveRecord
 {
 
+    public $proxy;
+
     /** @var int */
     public $profile_id;
 

@@ -39,7 +39,8 @@ class PeopleAction
             if ($person->captcha->waitForResult()) {
                 $response = $this->client->post(ContactPage::URL, [
                     'profile_id' => $person->profile_id,
-                    'g_recaptcha_response' => $person->captcha->getTaskSolution()
+                    'g_recaptcha_response' => $person->captcha->getTaskSolution(),
+                    'proxy' => $person->proxy,
                 ])->send();
 
                 if ($response->isOk) {
@@ -84,7 +85,9 @@ class PeopleAction
     private function createRequest(&$people)
     {
         foreach ($people as &$person) {
-            $person->request = $this->client->get($person->link);
+            $person->request = $this->client->get($person->link, [
+                'proxy' => $person->proxy,
+            ]);
         }
     }
 
@@ -98,7 +101,6 @@ class PeopleAction
         foreach ($people as $person) {
             $requests[$person->id] = $person->request;
         }
-
         $responses = $this->client->batch($requests);
 
         foreach ($people as &$person) {

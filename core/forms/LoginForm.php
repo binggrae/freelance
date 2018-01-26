@@ -17,6 +17,8 @@ class LoginForm extends Model
     public $login;
     public $password;
 
+    public $proxy;
+
     public $remember_me = 1;
 
     public function rules()
@@ -29,6 +31,7 @@ class LoginForm extends Model
     public function getPostData()
     {
         return [
+            'proxy' => $this->proxy,
             'login' => $this->login,
             'password' => $this->password,
             'remember_me' => $this->remember_me,
