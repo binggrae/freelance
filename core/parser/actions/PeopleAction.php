@@ -47,8 +47,15 @@ class PeopleAction
                         $page = new ContactPage($response->data['message']);
                         $person->setContacts($page->getContacts());
                         $person->setStatus(PeopleHelper::STATUS_COMPLETE);
+                    } else {
+                        file_put_contents(\Yii::getAlias('@common/data/contact. ' . uniqid() . '.html'), $response->content);
+                        var_dump(1);
                     }
+                } else {
+                    var_dump(2);
                 }
+            } else {
+                var_dump(3);
             }
 
             $person->save();
