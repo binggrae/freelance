@@ -2,6 +2,7 @@
 
 use core\entities\Category;
 use core\entities\People;
+use core\helpers\PeopleHelper;
 use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -34,6 +35,16 @@ $this->params['breadcrumbs'][] = $this->title;
                             'target' => '_blank'
                         ]
                     );
+                }
+            ],
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function (People $model) {
+                    $html = Html::tag('span', PeopleHelper::getStatusLabel($model->status), [
+                        'class' => 'label ' . PeopleHelper::getStatusClass($model->status)
+                    ]);
+                    return $html;
                 }
             ],
             'created_at:datetime',
