@@ -33,18 +33,9 @@ class PersonJob extends BaseObject implements JobInterface
      */
     public function execute($queue)
     {
-        $start = time();
         $this->api = \Yii::$container->get(Api::class);
 
         try {
-
-
-            $form = new LoginForm([
-                'login' => \Yii::$app->params['login'],
-                'password' => \Yii::$app->params['password'],
-            ]);
-            $this->api->login($form);
-
             $people = People::find()->where(['id' => $this->ids])->all();
 
 
