@@ -10,7 +10,7 @@ class Person
     /**
      * @param mixed $link
      */
-    public function setLink($link): void
+    public function setLink($link)
     {
         $this->link = 'https://freelancehunt.com' . $link;
     }
@@ -18,7 +18,7 @@ class Person
     /**
      * @param mixed $name
      */
-    public function setName($name): void
+    public function setName($name)
     {
         $this->name = $name;
     }
