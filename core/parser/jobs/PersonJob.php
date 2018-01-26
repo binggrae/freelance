@@ -38,8 +38,8 @@ class PersonJob extends BaseObject implements JobInterface
         try {
             $people = People::find()->where(['id' => $this->ids])->all();
 
-
             foreach ($people as &$person) {
+                $person->proxy = Client::getProxy();
                 $form = new LoginForm([
                     'proxy' =>$person->proxy,
                     'login' => \Yii::$app->params['login'],
