@@ -29,7 +29,10 @@ class CategoryAction
     {
         $index = 1;
         do {
-            $request = $this->client->get($category->link . '?page=' . $index)->send();
+            $proxy = Client::getProxy();
+            $request = $this->client->get($category->link . '?page=' . $index, [
+                'proxy' => $proxy,
+            ])->send();
             if ($request->isOk) {
                 $page = new CategoryPage($request->content);
                 foreach ($page->getPeople() as $person) {
