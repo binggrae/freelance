@@ -5,6 +5,7 @@ namespace core\parser\jobs;
 
 
 use core\entities\People;
+use core\exceptions\RequestException;
 use core\forms\LoginForm;
 use core\helpers\PeopleHelper;
 use core\parser\Api;
@@ -34,21 +35,35 @@ class PersonJob extends BaseObject implements JobInterface
         $start = time();
         $this->api = \Yii::$container->get(Api::class);
 
-        $form = new LoginForm([
-            'login' => \Yii::$app->params['login'],
-            'password' => \Yii::$app->params['password'],
-        ]);
-        $this->api->login($form);
+        try {
 
-        $people = People::find()->where(['id' => $this->ids])->all();
-        if (!$people) {
-            return;
-        }
-        foreach ($people as $person) {
-            $person->setStatus(PeopleHelper::STATUS_PROGRESS);
-            $person->save();
-        }
 
-        $this->api->loadPeople($people);
+            $form = new LoginForm([
+                'login' => \Yii::$app->params['login'],
+                'password' => \Yii::$app->params['password'],
+            ]);
+            $this->api->login($form);
+
+            $people = People::find()->where(['id' => $this->ids])->all();
+            if (!$people) {
+                return;
+            }
+            foreach ($people as $person) {
+                $person->setStatus(PeopleHelper::STATUS_PROGRESS);
+                $person->save();
+            }
+
+            $this->api->loadPeople($people);
+
+        } catch (RequestException $e) {
+            $people = People::find()->where(['id' => $this->ids])->all();
+            if (!$people) {
+                return;
+            }
+            foreach ($people as $person) {
+                $person->setStatus(PeopleHelper::STATUS_ERROR);
+                $person->save();
+            }
+        }
     }
 }
