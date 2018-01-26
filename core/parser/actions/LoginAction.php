@@ -24,6 +24,7 @@ class LoginAction
     /**
      * @param LoginForm $form
      * @return bool
+     * @throws \yii\httpclient\Exception
      */
     public function run($form)
     {
@@ -33,6 +34,7 @@ class LoginAction
 
             return $home->isLogin();
         } else {
+            var_dump($request->getStatusCode());
             throw new RequestException('Failed auth');
         }
     }
