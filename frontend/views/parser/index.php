@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <a href="<?=Url::to(['/parser/download']);?>" class="btn btn-success">Скачать</a>
+    <a href="<?= Url::to(['/parser/download']); ?>" class="btn btn-success">Скачать</a>
     <hr>
 
     <?= GridView::widget([
@@ -29,7 +29,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'value' => function (Category $model) {
                     return Html::a(
-                        str_replace('https://freelancehunt.com/freelancers/', '', $model->link),
+                        str_replace('https://freelancehunt.com/freelancers/', '', $model->link)
+                        . ' (' . $model->page . ')',
                         $model->link, [
                             'target' => '_blank'
                         ]
