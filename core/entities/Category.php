@@ -11,6 +11,7 @@ use core\parser\elements\Person;
  *
  * @property int $id
  * @property string $link
+ * @property int $page
  * @property int $status
  * @property int $created_at
  * @property int $updated_at
@@ -30,6 +31,7 @@ class Category extends \yii\db\ActiveRecord
     {
         $category = new self();
         $category->link = $link;
+        $category->page = 1;
         $category->status = CategoryHelper::STATUS_NEW;
         $category->created_at = time();
         $category->updated_at = time();
@@ -77,7 +79,7 @@ class Category extends \yii\db\ActiveRecord
     {
         return [
             [['link'], 'required'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['status', 'created_at', 'updated_at', 'page'], 'integer'],
             [['link'], 'string', 'max' => 255],
         ];
     }
@@ -88,6 +90,7 @@ class Category extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'link' => 'Ссылка',
+            'page' => 'Текущая страница',
             'status' => 'Статус',
             'created_at' => 'Дата создания',
             'updated_at' => 'Обновление',

@@ -27,10 +27,9 @@ class CategoryAction
      */
     public function run(Category $category)
     {
-        $index = 1;
         do {
             $proxy = Client::getProxy();
-            $request = $this->client->get($category->link . '?page=' . $index, [
+            $request = $this->client->get($category->link . '?page=' . $category->page, [
                 'proxy' => $proxy,
             ])->send();
             if ($request->isOk) {
@@ -41,7 +40,9 @@ class CategoryAction
             } else {
                 throw new RequestException('Ошибка загрузки категории');
             }
-            $index++;
+            var_dump($category->page);
+            $category->page++;
+            $category->save();
         } while ($page->hasNext());
 
     }
