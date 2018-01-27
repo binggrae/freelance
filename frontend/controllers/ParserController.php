@@ -66,10 +66,7 @@ class ParserController extends Controller
             ->andWhere(['category_people.cat_id' => $id]);
 
         $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => array(
-                'defaultOrder' => ['id' => SORT_DESC],
-            ),
+            'query' => $query
         ]);
 
         return $this->render('view', [
@@ -93,7 +90,7 @@ class ParserController extends Controller
                 'Person' => [
                     'class' => 'codemix\excelexport\ActiveExcelSheet',
                     'query' => $query,
-                    'attributes' => ['link', 'name', 'email', 'email'],
+                    'attributes' => ['link', 'name', 'email', 'skype'],
                 ]
             ]
         ]);
@@ -133,6 +130,7 @@ class ParserController extends Controller
 
                 $ids[] = $person->id;
             }
+			
         }
         $ids = array_chunk($ids, 5);
         foreach ($ids as $chunk) {

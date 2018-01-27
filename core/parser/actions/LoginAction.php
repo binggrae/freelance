@@ -31,11 +31,10 @@ class LoginAction
         $request = $this->client->post(LoginPage::URL, $form->getPostData())->send();
         if ($request->isOk) {
             $home = new LoginPage($request->content);
-
             return $home->isLogin();
         } else {
-            var_dump($request->getStatusCode());
-            throw new RequestException('Failed auth');
+			var_dump($form->getPostData()['proxy']);
+            //throw new RequestException('Failed auth');
         }
     }
 
