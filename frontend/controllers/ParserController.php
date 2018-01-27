@@ -134,7 +134,7 @@ class ParserController extends Controller
                 $ids[] = $person->id;
             }
         }
-        $ids = array_chunk($ids, 10);
+        $ids = array_chunk($ids, 5);
         foreach ($ids as $chunk) {
             \Yii::$app->queue->push(new PersonJob([
                 'ids' => $chunk
